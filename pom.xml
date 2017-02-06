@@ -13,6 +13,10 @@
     <inceptionYear>2017</inceptionYear>
     <url>http://metagraph.io</url>
 
+    <properties>
+        <junit.version>4.12</junit.version>
+    </properties>
+
     <scm>
         <url>https://github.com/openmg/metagraph-driver-java.git</url>
         <connection>scm:git:git@github.com:openmg/metagraph-driver-java.git</connection>
@@ -43,5 +47,14 @@
             <url>https://github.com/weston100721</url>
         </developer>
     </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>
