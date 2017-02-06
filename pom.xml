@@ -7,4 +7,41 @@
     <groupId>io.openmg</groupId>
     <artifactId>metagraph-driver-java</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <name>OpenMG :: Metagraph-driver :: metagraph-driver-java</name>
+
+    <inceptionYear>2017</inceptionYear>
+    <url>http://metagraph.io</url>
+
+    <scm>
+        <url>https://github.com/openmg/metagraph-driver-java.git</url>
+        <connection>scm:git:git@github.com:openmg/metagraph-driver-java.git</connection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>zizai</name>
+            <email>z@a-z.ai</email>
+            <url>http://github.com/zizai</url>
+        </developer>
+
+        <developer>
+            <name>boliza</name>
+            <email>cao.zhifu@gmail.com</email>
+            <url>https://github.com/boliza</url>
+        </developer>
+
+        <developer>
+            <name>troy</name>
+            <email>hsh8523@126.com</email>
+            <url>https://github.com/hsh8523</url>
+        </developer>
+
+        <developer>
+            <name>zhaoliang</name>
+            <email>weston_contribute@163.com</email>
+            <url>https://github.com/weston100721</url>
+        </developer>
+    </developers>
+
 </project>
