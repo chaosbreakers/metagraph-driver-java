@@ -3,7 +3,6 @@ package io.metagraph.driver;
 import org.apache.http.client.fluent.Request;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -14,32 +13,70 @@ import java.net.URL;
 public class Metagraph {
 
     private URL url;
+    private String token;
 
-    private static String REQUEST_PATH_OPEN = "";
-    private static String REQUEST_PATH_CREATE = "";
-    private static String REQUEST_PATH_CLOSE = "";
-    private static String REQUEST_PATH_DELETE = "";
-    private static String REQUEST_PATH_CLONE = "";
 
-    public Metagraph(URL url) {
+    private String REQUEST_PATH_FORMAT = "/graphs/%s";
+    private String REQUEST_PATH_CREATE = "";
+    private String REQUEST_PATH_CLOSE = "";
+    private String REQUEST_PATH_DELETE = "";
+    private String REQUEST_PATH_GRAPHS = "/graphs";
+    private String REQUEST_PATH_CLONE = "";
+    private String REQUEST_PATH_AUTHORIZATION = "";
+
+    public Metagraph(URL url, String username, String password) {
         this.url = url;
+        this.token = authorize(username, password);
     }
 
+    private String authorize(String username, String password) {
+        String token = "";
+        /*try {
+            token = Request.Get(url.toString() + REQUEST_PATH_AUTHORIZATION)
+                    .connectTimeout(1000)
+                    .socketTimeout(1000)
+                    .execute()
+                    .returnContent()
+                    .asString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        return token;
+    }
+
+
     /**
-     * open a graph
+     * 获取用户对应的所有的图的信息。
      *
-     * @param url graph address.
-     * @return a graph object.
+     * @return json
      * @throws IOException
      */
-    public Graph open(URL url) throws IOException {
-        Request.Get(url.toString() + REQUEST_PATH_OPEN)
+    private String graphs() throws IOException {
+        return Request.Get(url.toString() + REQUEST_PATH_GRAPHS)
+                .addHeader("token", token)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
                 .returnContent()
                 .asString();
-        return null;
+    }
+
+    /**
+     * open a graph.
+     *
+     * @param graphId graph id.
+     * @return a graph object.
+     * @throws IOException
+     */
+    public Graph open(String graphId) throws IOException {
+        Request.Get(format(graphId))
+                .addHeader("token", this.token)
+                .connectTimeout(1000)
+                .socketTimeout(1000)
+                .execute()
+                .returnContent()
+                .asString();
+        return new Graph(graphId);
     }
 
     /**
@@ -47,16 +84,22 @@ public class Metagraph {
      *
      * @return the created graph if success.
      * @throws IOException
-     * @throws URISyntaxException
      */
-    public Graph create() throws IOException, URISyntaxException {
-        Request.Get(url.toString() + REQUEST_PATH_CREATE)
+    public Graph create() throws IOException {
+        String json = Request.Post(format(""))
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
                 .returnContent()
                 .asString();
-        return null;
+        String graphId = getGraphIdFromJson(json);
+        return new Graph(graphId);
+    }
+
+    private String getGraphIdFromJson(String json) {
+        String graphId = "";
+        // TODO: 17-2-8 graph id.
+        return graphId;
     }
 
     /**
@@ -64,8 +107,8 @@ public class Metagraph {
      *
      * @throws IOException
      */
-    public void close() throws IOException {
-        Request.Get(url.toString() + REQUEST_PATH_CLOSE)
+    public void close(String graphId) throws IOException {
+        Request.Get(format(graphId))
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
@@ -78,8 +121,8 @@ public class Metagraph {
      *
      * @throws IOException
      */
-    public void delete() throws IOException {
-        Request.Get(url.toString() + REQUEST_PATH_DELETE)
+    public void delete(String graphId) throws IOException {
+        Request.Delete(format(graphId))
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
@@ -103,5 +146,9 @@ public class Metagraph {
 
     public void fork(URL url) {
 
+    }
+
+    public String format(String graphId) {
+        return String.format(url.toString() + REQUEST_PATH_FORMAT, graphId);
     }
 }

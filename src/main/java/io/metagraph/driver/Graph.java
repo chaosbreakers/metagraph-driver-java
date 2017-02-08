@@ -23,13 +23,18 @@ import java.util.List;
 public class Graph {
 
     private Strategies strategy = Strategies.standard;
+    private String graphId;
+
+    public Graph(String graphId) {
+        this.graphId = graphId;
+    }
 
     public void traversal(Strategies strategy) {
         this.strategy = strategy;
     }
 
     public static void main(String[] args) {
-        Graph graph = new Graph();
+        Graph graph = new Graph("string");
         graph.name();
     }
 
