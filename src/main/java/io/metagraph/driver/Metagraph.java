@@ -15,15 +15,6 @@ public class Metagraph {
     private URL url;
     private String token;
 
-
-    private String REQUEST_PATH_FORMAT = "/graphs/%s";
-    private String REQUEST_PATH_CREATE = "";
-    private String REQUEST_PATH_CLOSE = "";
-    private String REQUEST_PATH_DELETE = "";
-    private String REQUEST_PATH_GRAPHS = "/graphs";
-    private String REQUEST_PATH_CLONE = "";
-    private String REQUEST_PATH_AUTHORIZATION = "";
-
     public Metagraph(URL url, String username, String password) {
         this.url = url;
         this.token = authorize(username, password);
@@ -52,7 +43,7 @@ public class Metagraph {
      * @throws IOException
      */
     private String graphs() throws IOException {
-        return Request.Get(url.toString() + REQUEST_PATH_GRAPHS)
+        return Request.Get(format(""))
                 .addHeader("token", token)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
@@ -69,14 +60,15 @@ public class Metagraph {
      * @throws IOException
      */
     public Graph open(String graphId) throws IOException {
-        Request.Get(format(graphId))
+        String resultJson = Request.Get(format(graphId))
                 .addHeader("token", this.token)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
                 .returnContent()
                 .asString();
-        return new Graph(graphId);
+
+        return new Graph(url.toString(), graphId);
     }
 
     /**
@@ -93,7 +85,7 @@ public class Metagraph {
                 .returnContent()
                 .asString();
         String graphId = getGraphIdFromJson(json);
-        return new Graph(graphId);
+        return new Graph(url.toString(), graphId);
     }
 
     private String getGraphIdFromJson(String json) {
@@ -148,7 +140,7 @@ public class Metagraph {
 
     }
 
-    public String format(String graphId) {
-        return String.format(url.toString() + REQUEST_PATH_FORMAT, graphId);
+    private String format(String graphId) {
+        return String.format(url.toString() + "/graphs/%s", graphId);
     }
 }

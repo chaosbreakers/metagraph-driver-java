@@ -132,6 +132,7 @@
             <artifactId>fluent-hc</artifactId>
             <version>${httpclient.version}</version>
         </dependency>
+
     </dependencies>
 
 </project>

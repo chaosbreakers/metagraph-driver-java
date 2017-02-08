@@ -25,7 +25,7 @@ public class Graph {
     private Strategies strategy = Strategies.standard;
     private String graphId;
 
-    public Graph(String graphId) {
+    public Graph(String host, String graphId) {
         this.graphId = graphId;
     }
 
@@ -34,7 +34,7 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph graph = new Graph("string");
+        Graph graph = new Graph("http://localhost:8080", "string");
         graph.name();
     }
 
