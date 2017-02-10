@@ -22,4 +22,12 @@ public class AccessToken {
     public void setExpiredIn(long expiredIn) {
         this.expiredIn = expiredIn;
     }
+
+    @Override
+    public String toString() {
+        return "AccessToken{" +
+                "token='" + token + '\'' +
+                ", expiredIn=" + expiredIn +
+                '}';
+    }
 }

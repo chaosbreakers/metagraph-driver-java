@@ -29,9 +29,9 @@ public class JsonObjectConvert {
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         objectMapper.disable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
         objectMapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
-        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
-        objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, false);
-        objectMapper.configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, false);
+        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        objectMapper.configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
     }
 
     public static GraphResponse convertToGraphResponse(String json) throws IOException {

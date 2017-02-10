@@ -6,6 +6,7 @@ import io.metagraph.driver.resultmodel.metagraph.MetagraphResponse;
 import io.metagraph.driver.resultmodel.metagraph.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,21 +27,28 @@ public class Metagraph {
 
     public Metagraph(URL url, String username, String password) {
         this.url = url;
-        this.token = authorize(username, password);
+        this.token = connect(username, password);
     }
 
     /**
-     * authorize.
+     * connect.
+     * <p>
+     * POST: /connect
      *
      * @param username username
      * @param password password
      * @return token
      */
-    private String authorize(String username, String password) {
+    public String connect(String username, String password) {
         String token = null;
+        String postParameter = "{\n" +
+                "  \"username\":\"%s\",\n" +
+                "  \"password\":\"%s\"\n" +
+                "}";
         String resultJson = "";
         try {
-            resultJson = Request.Get(url.toString())
+            resultJson = Request.Post(url.toString() + "/connect")
+                    .bodyString(String.format(postParameter, username, password), ContentType.APPLICATION_JSON)
                     .connectTimeout(1000)
                     .socketTimeout(1000)
                     .execute()
@@ -51,12 +59,27 @@ public class Metagraph {
         }
         try {
             LoginResponse loginResponse = JsonObjectConvert.convertToLoginResponse(resultJson);
-            token = loginResponse.getAccessToken().getToken();
-
+            token = loginResponse.getResult().getAccessToken().getToken();
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
         return token;
+    }
+
+    /**
+     * delete: /disconnect
+     */
+    public void disConnect() {
+        try {
+            Request.Post(url.toString() + "/connect")
+                    .connectTimeout(1000)
+                    .socketTimeout(1000)
+                    .execute()
+                    .returnContent()
+                    .asString();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
 
@@ -196,6 +219,14 @@ public class Metagraph {
 
     public void fork(URL url) {
 
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     private String format(String graphId) {

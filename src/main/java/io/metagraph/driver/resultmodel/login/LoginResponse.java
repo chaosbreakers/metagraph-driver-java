@@ -20,6 +20,8 @@ public class LoginResponse {
 
     private boolean successful;
     private String requestId;
+    private Result result;
+
 
     public boolean isSuccessful() {
         return successful;
@@ -45,19 +47,14 @@ public class LoginResponse {
         this.result = result;
     }
 
-    public AccessToken getAccessToken() {
-        return accessToken;
+    @Override
+    public String toString() {
+        return "LoginResponse{" +
+                "successful=" + successful +
+                ", requestId='" + requestId + '\'' +
+                ", result=" + result +
+                '}';
     }
-
-    public void setAccessToken(AccessToken accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    private Result result;
-    private AccessToken accessToken;
-
-
-
 }
 
 

@@ -20,17 +20,17 @@ public class MetagraphTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        System.out.println("enter setUp");
-        vertx = Vertx.vertx();
-        vertx.deployVerticle(new RestApiVerticle(), res -> {
-            if (res.succeeded()) {
-                System.out.println("Deployment id is: " + res.result());
-                deployId = res.result();
-            } else {
-                System.out.println("Deployment failed!");
-            }
-        });
-        metagraph = new Metagraph(new URL("http://localhost:12345"), "name", "password");
+//        System.out.println("enter setUp");
+//        vertx = Vertx.vertx();
+//        vertx.deployVerticle(new RestApiVerticle(), res -> {
+//            if (res.succeeded()) {
+//                System.out.println("Deployment id is: " + res.result());
+//                deployId = res.result();
+//            } else {
+//                System.out.println("Deployment failed!");
+//            }
+//        });
+        metagraph = new Metagraph(new URL("http://localhost:8080"), "openmg", "openmg");
     }
 
     @AfterClass
@@ -40,6 +40,8 @@ public class MetagraphTest {
 
     @Test
     public void list() throws Exception {
+        String token = metagraph.getToken();
+        System.out.println(token);
 //        String graphs = metagraph.graphs();
 //        System.out.println(graphs);
 
@@ -47,7 +49,6 @@ public class MetagraphTest {
 
     @Test
     public void open() throws Exception {
-        Thread.sleep(900090L);
 
     }
 
