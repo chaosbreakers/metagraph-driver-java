@@ -1,106 +1,46 @@
 package io.metagraph.driver;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.tinkerpop.gremlin.process.computer.GraphComputer;
-import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
-import org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategies;
-import org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.T;
-import org.apache.tinkerpop.gremlin.structure.Transaction;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.apache.http.client.fluent.Request;
 
-import java.util.Iterator;
-import java.util.List;
+import java.io.IOException;
 
 /**
  * graph.
- * <p>
  * Created by (zhaoliang@metagraph.io) on (17-2-7).
  */
 public class Graph {
 
     private Strategies strategy = Strategies.standard;
+    private String host;
     private String graphId;
+    private String requestUrl;
+
+    private String format = "/graphs/%s/traversal";
 
     public Graph(String host, String graphId) {
+        this.host = host;
         this.graphId = graphId;
+        this.requestUrl = format(graphId);
     }
 
-    public void traversal(Strategies strategy) {
-        this.strategy = strategy;
+    public void gremlin(String gremlinScript) throws IOException {
+        Request.Get(format(graphId) + "?gremlin=" + gremlinScript)
+                .connectTimeout(1000)
+                .socketTimeout(1000)
+                .execute()
+                .returnContent()
+                .asString();
+    }
+
+    public void traversal(String gremlinScript) {
+
     }
 
     public static void main(String[] args) {
         Graph graph = new Graph("http://localhost:8080", "string");
-        graph.name();
     }
 
-    public void name() {
-        GraphTraversalSource g;
-        g = new GraphTraversalSource(new org.apache.tinkerpop.gremlin.structure.Graph() {
-            public Vertex addVertex(Object... keyValues) {
-                return null;
-            }
-
-            public <C extends GraphComputer> C compute(Class<C> graphComputerClass) throws IllegalArgumentException {
-                return null;
-            }
-
-            public GraphComputer compute() throws IllegalArgumentException {
-                return null;
-            }
-
-            public Iterator<Vertex> vertices(Object... vertexIds) {
-                return null;
-            }
-
-            public Iterator<Edge> edges(Object... edgeIds) {
-                return null;
-            }
-
-            public Transaction tx() {
-                return null;
-            }
-
-            public void close() throws Exception {
-
-            }
-
-            public Variables variables() {
-                return null;
-            }
-
-            public Configuration configuration() {
-                return null;
-            }
-        }, new TraversalStrategies() {
-            public List<TraversalStrategy<?>> toList() {
-                return null;
-            }
-
-            public void applyStrategies(Traversal.Admin<?, ?> traversal) {
-
-            }
-
-            public TraversalStrategies addStrategies(TraversalStrategy<?>[] strategies) {
-                return null;
-            }
-
-            public TraversalStrategies removeStrategies(Class<? extends TraversalStrategy>[] strategyClasses) {
-                return null;
-            }
-
-            public TraversalStrategies clone() {
-                return null;
-            }
-        });
-
-
-        GraphTraversal<Vertex, Vertex> hello = g.V().has(T.label, "hello");
-        String s = hello.toString();
-        System.out.println(s);
+    private String format(String graphId) {
+        return String.format(host + format, graphId);
     }
 }

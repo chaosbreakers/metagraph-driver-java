@@ -94,7 +94,7 @@ public class GremlinScript {
 
     public GremlinScript addVertex(Map<String, String> properties) {
         if (properties != null && properties.size() > 0) {
-            properties.keySet().stream().forEach(key -> addProperty(key, properties.get(key)));
+            properties.keySet().forEach(key -> addProperty(key, properties.get(key)));
         }
         return this;
     }
@@ -107,7 +107,7 @@ public class GremlinScript {
     public GremlinScript valueMap(Set<String> keys) {
         if (keys == null || keys.size() > 0) {
             stringBuilder.append(".valueMap(");
-            keys.stream().forEach(s1 -> stringBuilder.append("'").append(s1).append("',"));
+            keys.forEach(s1 -> stringBuilder.append("'").append(s1).append("',"));
             stringBuilder = new StringBuilder(stringBuilder.substring(0, stringBuilder.length() - 1));
             stringBuilder.append(")");
         }
@@ -135,7 +135,7 @@ public class GremlinScript {
     public GremlinScript hasWithIn(String key, List<String> values) {
         if (values != null && values.size() > 0) {
             stringBuilder.append(".has('").append(key).append("',within(");
-            values.stream().forEach(s -> stringBuilder.append("'").append(s).append("',"));
+            values.forEach(s -> stringBuilder.append("'").append(s).append("',"));
         }
         stringBuilder = new StringBuilder(stringBuilder.substring(0,stringBuilder.length() - 1)).append("))");
         return this;
@@ -160,9 +160,4 @@ public class GremlinScript {
         return stringBuilder.toString();
     }
 
-    public static void main(String[] args) {
-        GremlinScript script = new GremlinScript();
-        String as = script.addE("hello").addProperty("key", "value").addV("e").as("as").build();
-        System.out.println(as);
-    }
 }

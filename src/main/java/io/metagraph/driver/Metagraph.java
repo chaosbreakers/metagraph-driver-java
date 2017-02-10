@@ -38,9 +38,11 @@ public class Metagraph {
 
     /**
      * 获取用户对应的所有的图的信息。
+     * get all the graphs of the login user
+     * <p>
+     * GET: /graphs
      *
      * @return json
-     * @throws IOException
      */
     private String graphs() throws IOException {
         return Request.Get(format(""))
@@ -54,10 +56,11 @@ public class Metagraph {
 
     /**
      * open a graph.
+     * <p>
+     * GET: /graphs/:gid
      *
      * @param graphId graph id.
      * @return a graph object.
-     * @throws IOException
      */
     public Graph open(String graphId) throws IOException {
         String resultJson = Request.Get(format(graphId))
@@ -72,10 +75,48 @@ public class Metagraph {
     }
 
     /**
+     * PUT: /graphs/:gid
+     *
+     * @param graphId graph id.
+     */
+    public void update(String graphId) throws IOException {
+        String resultJson = Request.Put(format(graphId))
+                .addHeader("token", this.token)
+                .connectTimeout(1000)
+                .socketTimeout(1000)
+                .execute()
+                .returnContent()
+                .asString();
+    }
+
+    /**
+     * 断开与metagraph的连接。
+     * <p>
+     * PUT: /graphs/:gid/close
+     * <p>
+     * <p>
+     * {
+     * "request_id":"request_id",
+     * "result":{
+     * "msg":"close msg"
+     * }
+     * }
+     */
+    public void close(String graphId) throws IOException {
+        Request.Put(format(graphId) + "/close")
+                .connectTimeout(1000)
+                .socketTimeout(1000)
+                .execute()
+                .returnContent()
+                .asString();
+    }
+
+    /**
      * create a graph on metagraph server.
+     * <p>
+     * POST: /graphs
      *
      * @return the created graph if success.
-     * @throws IOException
      */
     public Graph create() throws IOException {
         String json = Request.Post(format(""))
@@ -95,23 +136,9 @@ public class Metagraph {
     }
 
     /**
-     * 断开与metagraph的连接。
-     *
-     * @throws IOException
-     */
-    public void close(String graphId) throws IOException {
-        Request.Get(format(graphId))
-                .connectTimeout(1000)
-                .socketTimeout(1000)
-                .execute()
-                .returnContent()
-                .asString();
-    }
-
-    /**
      * delete a graph in metagraph.
-     *
-     * @throws IOException
+     * <p>
+     * DELETE: /graphs/:gid
      */
     public void delete(String graphId) throws IOException {
         Request.Delete(format(graphId))
