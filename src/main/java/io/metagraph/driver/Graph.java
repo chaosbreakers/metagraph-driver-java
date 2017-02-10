@@ -3,6 +3,8 @@ package io.metagraph.driver;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -12,6 +14,7 @@ import java.io.IOException;
  */
 public class Graph {
 
+    public static final Logger logger = LoggerFactory.getLogger(Graph.class);
     private Strategies strategy = Strategies.standard;
     private String host;
     private String graphId;
@@ -26,6 +29,8 @@ public class Graph {
     }
 
     /**
+     * execute gremlin script in remote graph cluster.
+     *
      * @param gremlinScript for example : g.V().hasLabel('person')
      */
     public void gremlin(String gremlinScript, boolean async) throws IOException {
@@ -38,6 +43,8 @@ public class Graph {
     }
 
     /**
+     * execute traversal in remote graph cluster.
+     *
      * @param json :
      *             {
      *             "request_id": {

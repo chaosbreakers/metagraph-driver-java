@@ -6,6 +6,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.metagraph.driver.resultmodel.graph.GraphResponse;
+import io.metagraph.driver.resultmodel.login.LoginResponse;
+import io.metagraph.driver.resultmodel.metagraph.MetagraphResponse;
+
+import java.io.IOException;
 
 /**
  * test.
@@ -29,25 +34,15 @@ public class JsonObjectConvert {
         objectMapper.configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, false);
     }
 
-    public Object convert(ReturnType type,String json) {
-        switch (type) {
-            case list:
-                break;
-            case open:
-                break;
-            case close:
-                break;
-            case create:
-                break;
-            case update:
-                break;
-            case delete:
-                break;
-            case gremlin:
-                break;
-            case traversal:
-                break;
-        }
-        return null;
+    public static GraphResponse convertToGraphResponse(String json) throws IOException {
+        return objectMapper.readValue(json, GraphResponse.class);
+    }
+
+    public static MetagraphResponse convertToMetagraphResponse(String json) throws IOException {
+        return objectMapper.readValue(json, MetagraphResponse.class);
+    }
+
+    public static LoginResponse convertToLoginResponse(String json) throws IOException {
+        return objectMapper.readValue(json, LoginResponse.class);
     }
 }

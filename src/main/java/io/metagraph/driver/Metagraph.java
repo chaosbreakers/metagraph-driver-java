@@ -1,9 +1,17 @@
 package io.metagraph.driver;
 
+import io.metagraph.driver.resultmodel.JsonObjectConvert;
+import io.metagraph.driver.resultmodel.login.LoginResponse;
+import io.metagraph.driver.resultmodel.metagraph.MetagraphResponse;
+import io.metagraph.driver.resultmodel.metagraph.Result;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.fluent.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * metagraph.
@@ -12,6 +20,7 @@ import java.net.URL;
  */
 public class Metagraph {
 
+    public static final Logger logger = LoggerFactory.getLogger(Graph.class);
     private URL url;
     private String token;
 
@@ -20,18 +29,33 @@ public class Metagraph {
         this.token = authorize(username, password);
     }
 
+    /**
+     * authorize.
+     *
+     * @param username username
+     * @param password password
+     * @return token
+     */
     private String authorize(String username, String password) {
-        String token = "";
-        /*try {
-            token = Request.Get(url.toString() + REQUEST_PATH_AUTHORIZATION)
+        String token = null;
+        String resultJson = "";
+        try {
+            resultJson = Request.Get(url.toString())
                     .connectTimeout(1000)
                     .socketTimeout(1000)
                     .execute()
                     .returnContent()
                     .asString();
         } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+            logger.error(e.getMessage(), e);
+        }
+        try {
+            LoginResponse loginResponse = JsonObjectConvert.convertToLoginResponse(resultJson);
+            token = loginResponse.getAccessToken().getToken();
+
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
         return token;
     }
 
@@ -44,14 +68,33 @@ public class Metagraph {
      *
      * @return json
      */
-    private String graphs() throws IOException {
-        return Request.Get(format(""))
-                .addHeader("token", token)
+    public MetagraphResponse graphs() throws IOException {
+        String result = Request.Get(format(""))
+                .addHeader("token", this.token)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
                 .returnContent()
                 .asString();
+        return JsonObjectConvert.convertToMetagraphResponse(result);
+    }
+
+    /**
+     * create a graph on metagraph server.
+     * <p>
+     * POST: /graphs
+     *
+     * @return the created graph if success.
+     */
+    public Graph create() throws IOException {
+        String json = Request.Post(format(""))
+                .connectTimeout(1000)
+                .socketTimeout(1000)
+                .execute()
+                .returnContent()
+                .asString();
+        String graphId = getGraphIdFromJson(json);
+        return new Graph(url.toString(), graphId);
     }
 
     /**
@@ -90,6 +133,20 @@ public class Metagraph {
     }
 
     /**
+     * delete a graph in metagraph.
+     * <p>
+     * DELETE: /graphs/:gid
+     */
+    public void delete(String graphId) throws IOException {
+        Request.Delete(format(graphId))
+                .connectTimeout(1000)
+                .socketTimeout(1000)
+                .execute()
+                .returnContent()
+                .asString();
+    }
+
+    /**
      * 断开与metagraph的连接。
      * <p>
      * PUT: /graphs/:gid/close
@@ -102,51 +159,25 @@ public class Metagraph {
      * }
      * }
      */
-    public void close(String graphId) throws IOException {
-        Request.Put(format(graphId) + "/close")
+    public boolean close(String graphId) throws IOException {
+        String result = Request.Put(format(graphId) + "/close")
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
                 .returnContent()
                 .asString();
+        return StringUtils.isNotEmpty(result);
+
     }
 
-    /**
-     * create a graph on metagraph server.
-     * <p>
-     * POST: /graphs
-     *
-     * @return the created graph if success.
-     */
-    public Graph create() throws IOException {
-        String json = Request.Post(format(""))
-                .connectTimeout(1000)
-                .socketTimeout(1000)
-                .execute()
-                .returnContent()
-                .asString();
-        String graphId = getGraphIdFromJson(json);
-        return new Graph(url.toString(), graphId);
-    }
-
-    private String getGraphIdFromJson(String json) {
+    private String getGraphIdFromJson(String json) throws IOException {
         String graphId = "";
-        // TODO: 17-2-8 graph id.
+        MetagraphResponse metagraphResponse = JsonObjectConvert.convertToMetagraphResponse(json);
+        List<Result> result = metagraphResponse.getResult();
+        if (result != null && result.size() > 0) {
+            graphId = result.get(0).getGraphId();
+        }
         return graphId;
-    }
-
-    /**
-     * delete a graph in metagraph.
-     * <p>
-     * DELETE: /graphs/:gid
-     */
-    public void delete(String graphId) throws IOException {
-        Request.Delete(format(graphId))
-                .connectTimeout(1000)
-                .socketTimeout(1000)
-                .execute()
-                .returnContent()
-                .asString();
     }
 
     //------- git function --------

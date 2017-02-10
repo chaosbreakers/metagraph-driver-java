@@ -1,4 +1,4 @@
-package io.metagraph.driver.resultmodel;
+package io.metagraph.driver.resultmodel.metagraph;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

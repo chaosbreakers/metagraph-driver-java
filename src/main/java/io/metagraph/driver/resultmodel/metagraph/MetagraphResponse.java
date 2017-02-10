@@ -1,4 +1,4 @@
-package io.metagraph.driver.resultmodel;
+package io.metagraph.driver.resultmodel.metagraph;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * response.
  * Created by (zhaoliang@metagraph.io) on (17-2-9).
  */
-public class Response {
+public class MetagraphResponse {
 
     @JsonProperty("request_id")
     private String requestId;
