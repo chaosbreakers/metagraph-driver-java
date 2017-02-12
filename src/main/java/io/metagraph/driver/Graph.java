@@ -1,8 +1,9 @@
 package io.metagraph.driver;
 
+import io.metagraph.driver.resultmodel.JsonObjectConvert;
+import io.metagraph.driver.resultmodel.graph.GraphResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,13 +34,14 @@ public class Graph {
      *
      * @param gremlinScript for example : g.V().hasLabel('person')
      */
-    public void gremlin(String gremlinScript, boolean async) throws IOException {
-        Request.Get(requestUrl + "?gremlin=" + gremlinScript + "&async=" + async)
+    public GraphResponse gremlin(String gremlinScript, boolean async) throws IOException {
+        String resultJson = Request.Get(requestUrl + "?gremlin=" + gremlinScript + "&async=" + async)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
                 .returnContent()
                 .asString();
+        return JsonObjectConvert.convertToGraphResponse(resultJson);
     }
 
     /**
@@ -87,14 +89,14 @@ public class Graph {
      * }
      * }
      */
-    public String traversal(String json) throws IOException {
-        return Request.Post(requestUrl)
+    public GraphResponse traversal(String json) throws IOException {
+        String resultJson = Request.Post(requestUrl).bodyString(json, ContentType.APPLICATION_JSON)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
-                .body(new StringEntity(json, ContentType.APPLICATION_JSON))
                 .execute()
                 .returnContent()
                 .asString();
+        return JsonObjectConvert.convertToGraphResponse(resultJson);
     }
 
     /**

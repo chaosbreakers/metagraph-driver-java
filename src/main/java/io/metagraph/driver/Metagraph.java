@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class Metagraph {
 
-    public static final Logger logger = LoggerFactory.getLogger(Graph.class);
+    private static final Logger logger = LoggerFactory.getLogger(Graph.class);
     private URL url;
     private String token;
 
@@ -71,7 +71,7 @@ public class Metagraph {
      */
     public void disConnect() {
         try {
-            Request.Post(url.toString() + "/disconnect")
+            Request.Delete(url.toString() + "/disconnect")
                     .connectTimeout(1000)
                     .socketTimeout(1000)
                     .execute()
