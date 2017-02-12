@@ -105,7 +105,7 @@ public class GremlinScript {
     }
 
     public GremlinScript valueMap(Set<String> keys) {
-        if (keys == null || keys.size() > 0) {
+        if (keys != null && keys.size() > 0) {
             stringBuilder.append(".valueMap(");
             keys.forEach(s1 -> stringBuilder.append("'").append(s1).append("',"));
             stringBuilder = new StringBuilder(stringBuilder.substring(0, stringBuilder.length() - 1));

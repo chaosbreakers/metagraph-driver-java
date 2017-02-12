@@ -71,7 +71,7 @@ public class Metagraph {
      */
     public void disConnect() {
         try {
-            Request.Post(url.toString() + "/connect")
+            Request.Post(url.toString() + "/disconnect")
                     .connectTimeout(1000)
                     .socketTimeout(1000)
                     .execute()
