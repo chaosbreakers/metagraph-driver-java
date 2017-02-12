@@ -4,60 +4,60 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class GremlinScript {
+public class GraphTraversal {
 
     private StringBuilder stringBuilder = new StringBuilder();
 
-    public GremlinScript() {
+    public GraphTraversal() {
         stringBuilder.append("g");
     }
 
-    public GremlinScript V() {
+    public GraphTraversal V() {
         stringBuilder.append(".V()");
         return this;
     }
 
-    public GremlinScript V(String id) {
+    public GraphTraversal V(String id) {
         stringBuilder.append(".V('").append(id).append("')");
         return this;
     }
 
-    public GremlinScript count() {
+    public GraphTraversal count() {
         stringBuilder.append(".count()");
         return this;
     }
 
-    public GremlinScript as(String name) {
+    public GraphTraversal as(String name) {
         stringBuilder.append(".as('").append(name).append("')");
         return this;
     }
 
 
-    public GremlinScript addV(String label) {
+    public GraphTraversal addV(String label) {
         stringBuilder.append(".addV('").append(label).append("')");
         return this;
     }
 
-    public GremlinScript addProperty(String key, String value) {
+    public GraphTraversal addProperty(String key, String value) {
         stringBuilder.append(".property('").append(key).append("','").append(value).append("')");
         return this;
     }
 
-    public GremlinScript out(String label) {
+    public GraphTraversal out(String label) {
         stringBuilder.append(".out('").append(label).append("')");
         return this;
     }
 
-    public GremlinScript property(String key, String value) {
+    public GraphTraversal property(String key, String value) {
         return property(key, value, false);
     }
 
-    public GremlinScript outV() {
+    public GraphTraversal outV() {
         stringBuilder.append(".outV()");
         return this;
     }
 
-    public GremlinScript property(String key, String value, boolean valueIsMethod) {
+    public GraphTraversal property(String key, String value, boolean valueIsMethod) {
         if (valueIsMethod) {
             stringBuilder.append(".property('").append(key).append("',").append(value).append(")");
         } else {
@@ -66,45 +66,45 @@ public class GremlinScript {
         return this;
     }
 
-    public GremlinScript outE(String label) {
+    public GraphTraversal outE(String label) {
         stringBuilder.append(".outE('").append(label).append("')");
         return this;
     }
 
-    public GremlinScript addE(String label) {
+    public GraphTraversal addE(String label) {
         stringBuilder.append(".addE('").append(label).append("')");
         return this;
     }
 
-    public GremlinScript from(String name) {
+    public GraphTraversal from(String name) {
         stringBuilder.append(".from('").append(name).append("')");
         return this;
     }
 
-    public GremlinScript to(String name) {
+    public GraphTraversal to(String name) {
         stringBuilder.append(".to('").append(name).append("')");
         return this;
     }
 
-    public GremlinScript inV() {
+    public GraphTraversal inV() {
         stringBuilder.append(".inV()");
         return this;
     }
 
 
-    public GremlinScript addVertex(Map<String, String> properties) {
+    public GraphTraversal addVertex(Map<String, String> properties) {
         if (properties != null && properties.size() > 0) {
             properties.keySet().forEach(key -> addProperty(key, properties.get(key)));
         }
         return this;
     }
 
-    public GremlinScript hasLabel(String value) {
+    public GraphTraversal hasLabel(String value) {
         stringBuilder.append(".hasLabel('").append(value).append("')");
         return this;
     }
 
-    public GremlinScript valueMap(Set<String> keys) {
+    public GraphTraversal valueMap(Set<String> keys) {
         if (keys != null && keys.size() > 0) {
             stringBuilder.append(".valueMap(");
             keys.forEach(s1 -> stringBuilder.append("'").append(s1).append("',"));
@@ -114,16 +114,16 @@ public class GremlinScript {
         return this;
     }
 
-    public GremlinScript valueMap(String key) {
+    public GraphTraversal valueMap(String key) {
         stringBuilder.append(".valueMap('").append(key).append("')");
         return this;
     }
 
-    public GremlinScript has(String propertyKey, String propertyValue) {
+    public GraphTraversal has(String propertyKey, String propertyValue) {
         return has(propertyKey, propertyValue, false);
     }
 
-    public GremlinScript has(String key, String value, boolean valueIsMethod) {
+    public GraphTraversal has(String key, String value, boolean valueIsMethod) {
         if (valueIsMethod) {
             stringBuilder.append(".has('").append(key).append("',").append(value).append(")");
         } else {
@@ -132,7 +132,7 @@ public class GremlinScript {
         return this;
     }
 
-    public GremlinScript hasWithIn(String key, List<String> values) {
+    public GraphTraversal hasWithIn(String key, List<String> values) {
         if (values != null && values.size() > 0) {
             stringBuilder.append(".has('").append(key).append("',within(");
             values.forEach(s -> stringBuilder.append("'").append(s).append("',"));
@@ -141,17 +141,17 @@ public class GremlinScript {
         return this;
     }
 
-    public GremlinScript values(String key) {
+    public GraphTraversal values(String key) {
         stringBuilder.append(".values('").append(key).append("')");
         return this;
     }
 
-    public GremlinScript inE(String label) {
+    public GraphTraversal inE(String label) {
         stringBuilder.append(".inE('").append(label).append("')");
         return this;
     }
 
-    public GremlinScript next() {
+    public GraphTraversal next() {
         stringBuilder.append(".next()");
         return this;
     }

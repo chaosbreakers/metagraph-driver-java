@@ -33,9 +33,10 @@ public class Graph {
      * execute gremlin script in remote graph cluster.
      *
      * @param gremlinScript for example : g.V().hasLabel('person')
+     * @param mode tp or ap
      */
-    public GraphResponse gremlin(String gremlinScript, boolean async) throws IOException {
-        String resultJson = Request.Get(requestUrl + "?gremlin=" + gremlinScript + "&async=" + async)
+    public GraphResponse gremlin(String gremlinScript, boolean mode) throws IOException {
+        String resultJson = Request.Get(requestUrl + "?gremlin=" + gremlinScript + "&mode=" + mode)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()

@@ -67,7 +67,7 @@ public class Metagraph {
     }
 
     /**
-     * delete: /disconnect
+     * DELETE: /disconnect
      */
     public void disConnect() {
         try {
@@ -203,30 +203,8 @@ public class Metagraph {
         return graphId;
     }
 
-    //------- git function --------
-
-    public void cloneGraph(URL from, URL to) {
-
-    }
-
-    public void cloneGraph(URL to) {
-        cloneGraph(url, to);
-    }
-
-    public void branch(URL url) {
-
-    }
-
-    public void fork(URL url) {
-
-    }
-
     public String getToken() {
         return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     private String format(String graphId) {
