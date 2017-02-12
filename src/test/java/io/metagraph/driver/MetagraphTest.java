@@ -1,6 +1,7 @@
 package io.metagraph.driver;
 
 import io.metagraph.driver.restservice.RestApiVerticle;
+import io.metagraph.driver.resultmodel.graph.GraphResponse;
 import io.vertx.core.Vertx;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -50,11 +51,14 @@ public class MetagraphTest {
     @Test
     public void open() throws Exception {
 
+
     }
 
     @Test
     public void create() throws Exception {
-
+        Metagraph metagraph = new Metagraph(new URL("http://localhost:8080"), "username", "password");
+        Graph graph = metagraph.create();
+        GraphResponse graphResponse = graph.gremlin("g.V()", "tp");
     }
 
     @Test

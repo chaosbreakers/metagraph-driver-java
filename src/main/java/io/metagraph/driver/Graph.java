@@ -35,7 +35,7 @@ public class Graph {
      * @param gremlinScript for example : g.V().hasLabel('person')
      * @param mode tp or ap
      */
-    public GraphResponse gremlin(String gremlinScript, boolean mode) throws IOException {
+    public GraphResponse gremlin(String gremlinScript, String mode) throws IOException {
         String resultJson = Request.Get(requestUrl + "?gremlin=" + gremlinScript + "&mode=" + mode)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
