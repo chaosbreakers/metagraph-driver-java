@@ -1,9 +1,7 @@
 package io.metagraph.driver;
 
-import io.metagraph.driver.restservice.RestApiVerticle;
-import io.metagraph.driver.resultmodel.graph.GraphResponse;
-import io.vertx.core.Vertx;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,50 +13,37 @@ import java.net.URL;
  */
 public class MetagraphTest {
 
-    private static Vertx vertx;
-    private static String deployId;
     private static Metagraph metagraph;
+    private String graphId = null;
 
     @BeforeClass
     public static void setUp() throws Exception {
-//        System.out.println("enter setUp");
-//        vertx = Vertx.vertx();
-//        vertx.deployVerticle(new RestApiVerticle(), res -> {
-//            if (res.succeeded()) {
-//                System.out.println("Deployment id is: " + res.result());
-//                deployId = res.result();
-//            } else {
-//                System.out.println("Deployment failed!");
-//            }
-//        });
         metagraph = new Metagraph(new URL("http://localhost:8080"), "openmg", "openmg");
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-//        vertx.undeploy("io.metagraph.driver.restservice.RestApiVerticle");
     }
 
     @Test
     public void list() throws Exception {
         String token = metagraph.getToken();
         System.out.println(token);
-//        String graphs = metagraph.graphs();
-//        System.out.println(graphs);
-
-    }
-
-    @Test
-    public void open() throws Exception {
-
-
+        Assert.assertNotNull(token);
+        Assert.assertTrue(token.length() > 0);
     }
 
     @Test
     public void create() throws Exception {
-        Metagraph metagraph = new Metagraph(new URL("http://localhost:8080"), "username", "password");
-        Graph graph = metagraph.create();
-        GraphResponse graphResponse = graph.gremlin("g.V()", "tp");
+        Graph graph = metagraph.create("testGraph");
+        graphId = graph.getGraphId();
+        Assert.assertNotNull(graphId);
+        Assert.assertTrue(graphId.length() > 0);
+    }
+
+    @Test
+    public void open() throws Exception {
+        Graph graph = metagraph.open(graphId);
     }
 
     @Test

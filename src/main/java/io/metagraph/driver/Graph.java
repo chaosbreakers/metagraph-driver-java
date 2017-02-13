@@ -20,12 +20,14 @@ public class Graph {
     private String host;
     private String graphId;
     private String requestUrl;
+    private String token;
 
     private String format = "/graphs/%s/traversal";
 
-    public Graph(String host, String graphId) {
+    public Graph(String host, String graphId, String token) {
         this.host = host;
         this.graphId = graphId;
+        this.token = token;
         this.requestUrl = format(this.graphId);
     }
 
@@ -33,7 +35,7 @@ public class Graph {
      * execute gremlin script in remote graph cluster.
      *
      * @param gremlinScript for example : g.V().hasLabel('person')
-     * @param mode tp or ap
+     * @param mode          tp or ap
      */
     public GraphResponse gremlin(String gremlinScript, String mode) throws IOException {
         String resultJson = Request.Get(requestUrl + "?gremlin=" + gremlinScript + "&mode=" + mode)
@@ -108,5 +110,13 @@ public class Graph {
      */
     private String format(String graphId) {
         return String.format(host + format, graphId);
+    }
+
+    public String getGraphId() {
+        return graphId;
+    }
+
+    public void setGraphId(String graphId) {
+        this.graphId = graphId;
     }
 }

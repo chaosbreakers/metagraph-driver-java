@@ -72,6 +72,8 @@ public class Metagraph {
     public void disConnect() {
         try {
             Request.Delete(url.toString() + "/disconnect")
+                    .addHeader("content-type", "application/json")
+                    .addHeader("Authenticate", token)
                     .connectTimeout(1000)
                     .socketTimeout(1000)
                     .execute()
@@ -109,15 +111,18 @@ public class Metagraph {
      *
      * @return the created graph if success.
      */
-    public Graph create() throws IOException {
-        String json = Request.Post(format(""))
+    public Graph create(String graphName) throws IOException {
+        String json = Request.Post(url.toString() + "/graphs")
+                .addHeader("content-type", "application/json")
+                .addHeader("Authenticate", token)
+                .bodyString(String.format("{\"graph_name\":\"%s\"}", graphName), ContentType.APPLICATION_JSON)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
                 .returnContent()
                 .asString();
         String graphId = getGraphIdFromJson(json);
-        return new Graph(url.toString(), graphId);
+        return new Graph(url.toString(), graphId, token);
     }
 
     /**
@@ -130,14 +135,15 @@ public class Metagraph {
      */
     public Graph open(String graphId) throws IOException {
         String resultJson = Request.Get(format(graphId))
-                .addHeader("token", this.token)
+                .addHeader("content-type", "application/json")
+                .addHeader("Authenticate", token)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
                 .returnContent()
                 .asString();
 
-        return new Graph(url.toString(), graphId);
+        return new Graph(url.toString(), graphId, token);
     }
 
     /**
@@ -145,9 +151,11 @@ public class Metagraph {
      *
      * @param graphId graph id.
      */
-    public void update(String graphId) throws IOException {
+    public void update(String graphId, String json) throws IOException {
         String resultJson = Request.Put(format(graphId))
-                .addHeader("token", this.token)
+                .bodyString(json, ContentType.APPLICATION_JSON)
+                .addHeader("content-type", "application/json")
+                .addHeader("Authenticate", token)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
@@ -162,6 +170,8 @@ public class Metagraph {
      */
     public void delete(String graphId) throws IOException {
         Request.Delete(format(graphId))
+                .addHeader("content-type", "application/json")
+                .addHeader("Authenticate", token)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
@@ -184,6 +194,8 @@ public class Metagraph {
      */
     public boolean close(String graphId) throws IOException {
         String result = Request.Put(format(graphId) + "/close")
+                .addHeader("content-type", "application/json")
+                .addHeader("Authenticate", token)
                 .connectTimeout(1000)
                 .socketTimeout(1000)
                 .execute()
