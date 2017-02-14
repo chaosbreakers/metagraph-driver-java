@@ -22,6 +22,8 @@ import java.util.List;
 public class Metagraph {
 
     private static final Logger logger = LoggerFactory.getLogger(Graph.class);
+    private static final int CONNECT_TIMEOUT = 10 * 1000;
+    private static final int SOCKET_TIMEOUT = 10 * 1000;
     private URL url;
     private String token;
 
@@ -49,8 +51,7 @@ public class Metagraph {
         try {
             resultJson = Request.Post(url.toString() + "/connect")
                     .bodyString(String.format(postParameter, username, password), ContentType.APPLICATION_JSON)
-                    .connectTimeout(1000)
-                    .socketTimeout(1000)
+                    .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
                     .execute()
                     .returnContent()
                     .asString();
@@ -74,8 +75,7 @@ public class Metagraph {
             Request.Delete(url.toString() + "/disconnect")
                     .addHeader("content-type", "application/json")
                     .addHeader("Authenticate", token)
-                    .connectTimeout(1000)
-                    .socketTimeout(1000)
+                    .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
                     .execute()
                     .returnContent()
                     .asString();
@@ -95,9 +95,8 @@ public class Metagraph {
      */
     public MetagraphResponse graphs() throws IOException {
         String result = Request.Get(format(""))
-                .addHeader("token", this.token)
-                .connectTimeout(1000)
-                .socketTimeout(1000)
+                .addHeader("content-type", "application/json").addHeader("Authenticate", token)
+                .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
                 .execute()
                 .returnContent()
                 .asString();
@@ -112,12 +111,10 @@ public class Metagraph {
      * @return the created graph if success.
      */
     public Graph create(String graphName) throws IOException {
-        String json = Request.Post(url.toString() + "/graphs")
-                .addHeader("content-type", "application/json")
-                .addHeader("Authenticate", token)
+        String json = Request.Post(format(""))
+                .addHeader("content-type", "application/json").addHeader("Authenticate", token)
                 .bodyString(String.format("{\"graph_name\":\"%s\"}", graphName), ContentType.APPLICATION_JSON)
-                .connectTimeout(1000)
-                .socketTimeout(1000)
+                .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
                 .execute()
                 .returnContent()
                 .asString();
@@ -137,8 +134,7 @@ public class Metagraph {
         String resultJson = Request.Get(format(graphId))
                 .addHeader("content-type", "application/json")
                 .addHeader("Authenticate", token)
-                .connectTimeout(1000)
-                .socketTimeout(1000)
+                .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
                 .execute()
                 .returnContent()
                 .asString();
@@ -156,8 +152,7 @@ public class Metagraph {
                 .bodyString(json, ContentType.APPLICATION_JSON)
                 .addHeader("content-type", "application/json")
                 .addHeader("Authenticate", token)
-                .connectTimeout(1000)
-                .socketTimeout(1000)
+                .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
                 .execute()
                 .returnContent()
                 .asString();
@@ -172,8 +167,7 @@ public class Metagraph {
         Request.Delete(format(graphId))
                 .addHeader("content-type", "application/json")
                 .addHeader("Authenticate", token)
-                .connectTimeout(1000)
-                .socketTimeout(1000)
+                .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
                 .execute()
                 .returnContent()
                 .asString();
@@ -196,8 +190,7 @@ public class Metagraph {
         String result = Request.Put(format(graphId) + "/close")
                 .addHeader("content-type", "application/json")
                 .addHeader("Authenticate", token)
-                .connectTimeout(1000)
-                .socketTimeout(1000)
+                .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
                 .execute()
                 .returnContent()
                 .asString();
@@ -220,6 +213,6 @@ public class Metagraph {
     }
 
     private String format(String graphId) {
-        return String.format(url.toString() + "/graphs/%s", graphId);
+        return StringUtils.isEmpty(graphId) ? url.toString() + "/graphs" : String.format(url.toString() + "/graphs/%s", graphId);
     }
 }

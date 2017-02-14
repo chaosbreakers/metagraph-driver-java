@@ -1,5 +1,6 @@
 package io.metagraph.driver;
 
+import io.metagraph.driver.resultmodel.metagraph.MetagraphResponse;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -19,6 +20,7 @@ public class MetagraphTest {
     @BeforeClass
     public static void setUp() throws Exception {
         metagraph = new Metagraph(new URL("http://localhost:8080"), "openmg", "openmg");
+//        metagraph = new Metagraph(new URL("http://192.168.199.189:8080"), "openmg", "openmg");
     }
 
     @AfterClass
@@ -26,7 +28,7 @@ public class MetagraphTest {
     }
 
     @Test
-    public void list() throws Exception {
+    public void token() throws Exception {
         String token = metagraph.getToken();
         System.out.println(token);
         Assert.assertNotNull(token);
@@ -34,9 +36,17 @@ public class MetagraphTest {
     }
 
     @Test
+    public void graphs() throws Exception {
+        MetagraphResponse graphs = metagraph.graphs();
+        System.out.println(graphs);
+
+    }
+
+    @Test
     public void create() throws Exception {
         Graph graph = metagraph.create("testGraph");
         graphId = graph.getGraphId();
+        System.out.println(graphId);
         Assert.assertNotNull(graphId);
         Assert.assertTrue(graphId.length() > 0);
     }
