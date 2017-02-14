@@ -2,6 +2,7 @@ package io.metagraph.driver;
 
 import io.metagraph.driver.resultmodel.JsonObjectConvert;
 import io.metagraph.driver.resultmodel.login.LoginResponse;
+import io.metagraph.driver.resultmodel.metagraph.CreateResponse;
 import io.metagraph.driver.resultmodel.metagraph.MetagraphResponse;
 import io.metagraph.driver.resultmodel.metagraph.Result;
 import org.apache.commons.lang3.StringUtils;
@@ -118,7 +119,9 @@ public class Metagraph {
                 .execute()
                 .returnContent()
                 .asString();
-        String graphId = getGraphIdFromJson(json);
+        System.out.println("json="+json);
+        CreateResponse createResponse = JsonObjectConvert.convertToCreateResponse(json);
+        String graphId = createResponse.getResult().getGraph_id();
         return new Graph(url.toString(), graphId, token);
     }
 

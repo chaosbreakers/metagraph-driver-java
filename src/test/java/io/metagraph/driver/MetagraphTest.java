@@ -19,8 +19,8 @@ public class MetagraphTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        metagraph = new Metagraph(new URL("http://localhost:8080"), "openmg", "openmg");
-//        metagraph = new Metagraph(new URL("http://192.168.199.189:8080"), "openmg", "openmg");
+//        metagraph = new Metagraph(new URL("http://localhost:8080"), "openmg", "openmg");
+        metagraph = new Metagraph(new URL("http://192.168.199.189:8080"), "openmg", "openmg");
     }
 
     @AfterClass
@@ -46,7 +46,6 @@ public class MetagraphTest {
     public void create() throws Exception {
         Graph graph = metagraph.create("testGraph");
         graphId = graph.getGraphId();
-        System.out.println(graphId);
         Assert.assertNotNull(graphId);
         Assert.assertTrue(graphId.length() > 0);
     }
