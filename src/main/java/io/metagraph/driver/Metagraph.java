@@ -1,6 +1,7 @@
 package io.metagraph.driver;
 
 import io.metagraph.driver.resultmodel.JsonObjectConvert;
+import io.metagraph.driver.resultmodel.metagraph.GraphsResponse;
 import io.metagraph.driver.resultmodel.login.LoginResponse;
 import io.metagraph.driver.resultmodel.metagraph.CreateResponse;
 import io.metagraph.driver.resultmodel.metagraph.MetagraphResponse;
@@ -65,6 +66,7 @@ public class Metagraph {
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
+        logger.info("[connect][POST: /connect] connect to {} with {}={} and return the token is {}", url, username, password, token);
         return token;
     }
 
@@ -94,14 +96,15 @@ public class Metagraph {
      *
      * @return json
      */
-    public MetagraphResponse graphs() throws IOException {
+    public GraphsResponse graphs() throws IOException {
         String result = Request.Get(format(""))
                 .addHeader("content-type", "application/json").addHeader("Authenticate", token)
                 .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
                 .execute()
                 .returnContent()
                 .asString();
-        return JsonObjectConvert.convertToMetagraphResponse(result);
+        logger.info("[graphs][GET: /graphs] and the result is {} ", result);
+        return JsonObjectConvert.convertToGraphsResponse(result);
     }
 
     /**
@@ -119,7 +122,7 @@ public class Metagraph {
                 .execute()
                 .returnContent()
                 .asString();
-        System.out.println("json="+json);
+        logger.info("[create][POST: /graphs] graphName={} token={} result json is {}.", graphName, token, json);
         CreateResponse createResponse = JsonObjectConvert.convertToCreateResponse(json);
         String graphId = createResponse.getResult().getGraph_id();
         return new Graph(url.toString(), graphId, token);
@@ -142,6 +145,7 @@ public class Metagraph {
                 .returnContent()
                 .asString();
 
+        logger.info("[open][GET: /graphs/:gid] with parameter graphId={}, result={}", graphId, resultJson);
         return new Graph(url.toString(), graphId, token);
     }
 
@@ -159,6 +163,8 @@ public class Metagraph {
                 .execute()
                 .returnContent()
                 .asString();
+        logger.info("[update][PUT: /graphs/:gid] with parameter graphId={} json={}, result={}", graphId, json, resultJson);
+
     }
 
     /**
@@ -167,13 +173,14 @@ public class Metagraph {
      * DELETE: /graphs/:gid
      */
     public void delete(String graphId) throws IOException {
-        Request.Delete(format(graphId))
+        String deleteJson = Request.Delete(format(graphId))
                 .addHeader("content-type", "application/json")
                 .addHeader("Authenticate", token)
                 .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
                 .execute()
                 .returnContent()
                 .asString();
+        logger.info("[delete][DELETE: /graphs/:gid] with parameter graphId={}; result={}", graphId, deleteJson);
     }
 
     /**
@@ -197,6 +204,7 @@ public class Metagraph {
                 .execute()
                 .returnContent()
                 .asString();
+        logger.info("[close][PUT: /graphs/:gid/close] with parameter graphId={}; result={}", graphId, result);
         return StringUtils.isNotEmpty(result);
 
     }

@@ -38,4 +38,13 @@ public class Result {
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "graphURL='" + graphURL + '\'' +
+                ", graphId='" + graphId + '\'' +
+                ", msg='" + msg + '\'' +
+                '}';
+    }
 }

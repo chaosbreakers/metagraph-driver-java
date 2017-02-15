@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.metagraph.driver.resultmodel.graph.GraphResponse;
+import io.metagraph.driver.resultmodel.metagraph.GraphsResponse;
 import io.metagraph.driver.resultmodel.login.LoginResponse;
 import io.metagraph.driver.resultmodel.metagraph.CreateResponse;
 import io.metagraph.driver.resultmodel.metagraph.MetagraphResponse;
@@ -49,5 +50,9 @@ public class JsonObjectConvert {
 
     public static LoginResponse convertToLoginResponse(String json) throws IOException {
         return objectMapper.readValue(json, LoginResponse.class);
+    }
+
+    public static GraphsResponse convertToGraphsResponse(String json) throws IOException {
+        return objectMapper.readValue(json,GraphsResponse.class);
     }
 }

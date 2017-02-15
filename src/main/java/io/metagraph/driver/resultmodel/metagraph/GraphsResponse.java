@@ -1,4 +1,4 @@
-package io.metagraph.driver.resultmodel.graphs;
+package io.metagraph.driver.resultmodel.metagraph;
 
 import java.util.List;
 

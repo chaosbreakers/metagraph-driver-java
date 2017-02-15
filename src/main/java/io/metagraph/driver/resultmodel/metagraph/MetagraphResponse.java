@@ -41,4 +41,13 @@ public class MetagraphResponse {
     public void setResult(List<Result> result) {
         this.result = result;
     }
+
+    @Override
+    public String toString() {
+        return "MetagraphResponse{" +
+                "requestId='" + requestId + '\'' +
+                ", graphName='" + graphName + '\'' +
+                ", result=" + result +
+                '}';
+    }
 }
