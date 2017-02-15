@@ -1,21 +1,27 @@
 package io.metagraph.driver;
 
-import io.metagraph.driver.resultmodel.metagraph.MetagraphResponse;
+import io.metagraph.driver.resultmodel.metagraph.GraphsResponse;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.net.URL;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * test for {@link Metagraph}
  * Created by (zhaoliang@metagraph.io) on (17-2-8).
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MetagraphTest {
 
     private static Metagraph metagraph;
     private String graphId = null;
+    private String graphId1 = null;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -25,63 +31,58 @@ public class MetagraphTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
+        metagraph.disConnect();
     }
 
     @Test
-    public void token() throws Exception {
+    public void test1token() throws Exception {
         String token = metagraph.getToken();
-        System.out.println(token);
-        Assert.assertNotNull(token);
-        Assert.assertTrue(token.length() > 0);
+        assertNotNull(token);
+        assertTrue(token.length() > 0);
     }
 
     @Test
-    public void graphs() throws Exception {
-        MetagraphResponse graphs = metagraph.graphs();
-        System.out.println(graphs);
-
-    }
-
-    @Test
-    public void create() throws Exception {
-        Graph graph = metagraph.create("testGraph");
+    public void test2create() throws Exception {
+        Graph graph = metagraph.create("testGraph1");
         graphId = graph.getGraphId();
-        Assert.assertNotNull(graphId);
-        Assert.assertTrue(graphId.length() > 0);
+        assertNotNull(graphId);
+        assertTrue(graphId.length() > 0);
+
+        Graph testGraph2 = metagraph.create("testGraph2");
+        graphId1 = testGraph2.getGraphId();
+        assertNotNull(graphId1);
+        assertTrue(graphId1.length() > 0);
     }
 
     @Test
-    public void open() throws Exception {
-        Graph graph = metagraph.open(graphId);
+    public void test2graphs() throws Exception {
+        GraphsResponse graphs = metagraph.graphs();
+        List<GraphsResponse.ResultEntity> result = graphs.getResult();
+        assertNotNull(result);
+        assertTrue(result.size() == 2);
     }
 
     @Test
-    public void close() throws Exception {
-
-    }
-
-    @Test
-    public void delete() throws Exception {
-
-    }
-
-    @Test
-    public void cloneGraph() throws Exception {
-
-    }
-
-    @Test
-    public void cloneGraph1() throws Exception {
+    public void test4open() throws Exception {
+        metagraph.open(graphId);
 
     }
 
     @Test
-    public void branch() throws Exception {
+    public void test5close() throws Exception {
+        metagraph.close(graphId);
 
     }
 
     @Test
-    public void fork() throws Exception {
+    public void test6delete() throws Exception {
+        metagraph.delete(graphId);
+        metagraph.delete(graphId1);
+        GraphsResponse graphs = metagraph.graphs();
+        List<GraphsResponse.ResultEntity> result = graphs.getResult();
+        if (result != null) {
+            assertEquals(0, result.size());
+        }
 
     }
 
