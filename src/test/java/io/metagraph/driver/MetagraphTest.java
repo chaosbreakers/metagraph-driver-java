@@ -1,11 +1,14 @@
 package io.metagraph.driver;
 
-import io.metagraph.driver.resultmodel.metagraph.GraphsResponse;
+import io.metagraph.driver.resultmodel.metagraph.graphs.GraphsResponse;
+import io.metagraph.driver.resultmodel.metagraph.graphs.ResultEntity;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.List;
@@ -19,9 +22,11 @@ import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MetagraphTest {
 
+    private static Logger logger = LoggerFactory.getLogger(MetagraphTest.class);
+
     private static Metagraph metagraph;
-    private String graphId = null;
-    private String graphId1 = null;
+    private static String graphId = null;
+    private static String graphId1 = null;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -55,15 +60,16 @@ public class MetagraphTest {
     }
 
     @Test
-    public void test2graphs() throws Exception {
+    public void test3graphs() throws Exception {
         GraphsResponse graphs = metagraph.graphs();
-        List<GraphsResponse.ResultEntity> result = graphs.getResult();
+        List<ResultEntity> result = graphs.getResult();
         assertNotNull(result);
         assertTrue(result.size() == 2);
     }
 
     @Test
     public void test4open() throws Exception {
+        logger.info("open graph with the graphId is {}", graphId);
         metagraph.open(graphId);
 
     }
@@ -79,7 +85,7 @@ public class MetagraphTest {
         metagraph.delete(graphId);
         metagraph.delete(graphId1);
         GraphsResponse graphs = metagraph.graphs();
-        List<GraphsResponse.ResultEntity> result = graphs.getResult();
+        List<ResultEntity> result = graphs.getResult();
         if (result != null) {
             assertEquals(0, result.size());
         }

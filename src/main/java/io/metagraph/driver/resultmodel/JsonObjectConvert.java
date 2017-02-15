@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.metagraph.driver.resultmodel.graph.GraphResponse;
-import io.metagraph.driver.resultmodel.metagraph.GraphsResponse;
+import io.metagraph.driver.resultmodel.metagraph.graphs.GraphsResponse;
 import io.metagraph.driver.resultmodel.login.LoginResponse;
-import io.metagraph.driver.resultmodel.metagraph.CreateResponse;
+import io.metagraph.driver.resultmodel.metagraph.create.CreateResponse;
 import io.metagraph.driver.resultmodel.metagraph.MetagraphResponse;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class JsonObjectConvert {
     static {
         objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+//        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         objectMapper.disable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);

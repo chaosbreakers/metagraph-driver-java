@@ -1,7 +1,5 @@
 package io.metagraph.driver;
 
-import io.metagraph.driver.resultmodel.JsonObjectConvert;
-import io.metagraph.driver.resultmodel.graph.GraphResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
@@ -37,14 +35,17 @@ public class Graph {
      * @param gremlinScript for example : g.V().hasLabel('person')
      * @param mode          tp or ap
      */
-    public GraphResponse gremlin(String gremlinScript, String mode) throws IOException {
+    public String gremlin(String gremlinScript, String mode) throws IOException {
         String resultJson = Request.Get(requestUrl + "?gremlin=" + gremlinScript + "&mode=" + mode)
-                .connectTimeout(1000)
-                .socketTimeout(1000)
+                .addHeader("content-type", "application/json").addHeader("Authenticate", token)
+                .connectTimeout(1000 * 30)
+                .socketTimeout(1000 * 30)
                 .execute()
                 .returnContent()
                 .asString();
-        return JsonObjectConvert.convertToGraphResponse(resultJson);
+        logger.info("[gremlin][GET: /graphs/graphId/traversal] parameter gremlinScript={}, mode={},graphId={}; result is {}", gremlinScript, mode, graphId, resultJson);
+        // TODO: 17-2-15 convert graphSon to Object.
+        return resultJson;
     }
 
     /**
@@ -92,14 +93,17 @@ public class Graph {
      * }
      * }
      */
-    public GraphResponse traversal(String json) throws IOException {
+    public String traversal(String json) throws IOException {
+        logger.info("requestURL = {}", requestUrl);
         String resultJson = Request.Post(requestUrl).bodyString(json, ContentType.APPLICATION_JSON)
-                .connectTimeout(1000)
-                .socketTimeout(1000)
+                .addHeader("content-type", "application/json").addHeader("Authenticate", token)
+                .connectTimeout(1000 * 30)
+                .socketTimeout(1000 * 30)
                 .execute()
                 .returnContent()
                 .asString();
-        return JsonObjectConvert.convertToGraphResponse(resultJson);
+        logger.info("[traversal][Post: /graphs/graphId/traversal] parameter json={},graphId={}; result is {}", json, graphId, resultJson);
+        return resultJson;
     }
 
     /**

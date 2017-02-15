@@ -1,11 +1,11 @@
 package io.metagraph.driver;
 
 import io.metagraph.driver.resultmodel.JsonObjectConvert;
-import io.metagraph.driver.resultmodel.metagraph.GraphsResponse;
 import io.metagraph.driver.resultmodel.login.LoginResponse;
-import io.metagraph.driver.resultmodel.metagraph.CreateResponse;
 import io.metagraph.driver.resultmodel.metagraph.MetagraphResponse;
 import io.metagraph.driver.resultmodel.metagraph.Result;
+import io.metagraph.driver.resultmodel.metagraph.create.CreateResponse;
+import io.metagraph.driver.resultmodel.metagraph.graphs.GraphsResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
@@ -131,13 +131,13 @@ public class Metagraph {
     /**
      * open a graph.
      * <p>
-     * GET: /graphs/:gid
+     * POST: /graphs/:gid/open
      *
      * @param graphId graph id.
      * @return a graph object.
      */
     public Graph open(String graphId) throws IOException {
-        String resultJson = Request.Get(format(graphId))
+        String resultJson = Request.Post(format(graphId) + "/open")
                 .addHeader("content-type", "application/json")
                 .addHeader("Authenticate", token)
                 .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
@@ -145,7 +145,7 @@ public class Metagraph {
                 .returnContent()
                 .asString();
 
-        logger.info("[open][GET: /graphs/:gid] with parameter graphId={}, result={}", graphId, resultJson);
+        logger.info("[open][POST: /graphs/:gid/open] with parameter graphId={}, result={}", graphId, resultJson);
         return new Graph(url.toString(), graphId, token);
     }
 
@@ -197,7 +197,7 @@ public class Metagraph {
      * }
      */
     public boolean close(String graphId) throws IOException {
-        String result = Request.Put(format(graphId) + "/close")
+        String result = Request.Post(format(graphId) + "/close")
                 .addHeader("content-type", "application/json")
                 .addHeader("Authenticate", token)
                 .connectTimeout(CONNECT_TIMEOUT).socketTimeout(SOCKET_TIMEOUT)
