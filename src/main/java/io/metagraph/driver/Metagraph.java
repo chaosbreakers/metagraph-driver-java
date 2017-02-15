@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -31,6 +32,15 @@ public class Metagraph {
 
     public Metagraph(URL url, String username, String password) {
         this.url = url;
+        this.token = connect(username, password);
+    }
+
+    public Metagraph(String url, String username, String password) {
+        try {
+            this.url = new URL(url);
+        } catch (MalformedURLException e) {
+            logger.info(e.getMessage(), e);
+        }
         this.token = connect(username, password);
     }
 
@@ -125,7 +135,7 @@ public class Metagraph {
         logger.info("[create][POST: /graphs] graphName={} token={} result json is {}.", graphName, token, json);
         CreateResponse createResponse = JsonObjectConvert.convertToCreateResponse(json);
         String graphId = createResponse.getResult().getGraph_id();
-        return new Graph(url.toString(), graphId, token);
+        return open(graphId);
     }
 
     /**
