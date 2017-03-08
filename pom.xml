@@ -6,7 +6,7 @@
 
     <groupId>io.openmg</groupId>
     <artifactId>metagraph-driver-java</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>OpenMG :: Metagraph-driver :: metagraph-driver-java</name>
 
@@ -139,9 +139,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <descriptorRefs>
+                    <!--<descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    </descriptorRefs>-->
+                    <descriptor>src/main/assemble/package.xml</descriptor>
                 </configuration>
                 <executions>
                     <execution>
@@ -166,14 +167,14 @@
                             <goal>release</goal>
                         </goals>
                         <configuration>
-                            <description>Metagraph Server Distribution</description>
+                            <description>java driver for Metagraph</description>
                             <releaseName>${project.version}</releaseName>
                             <tag>mg-driver-${project.version}</tag>
                             <fileSets>
                                 <fileSet>
                                     <directory>${project.build.directory}</directory>
                                     <includes>
-                                        <include>*jar-with-dependencies.jar</include>
+                                        <include>${project.artifactId}-${project.version}-jar-with-dependencies.jar</include>
                                     </includes>
                                 </fileSet>
                             </fileSets>
@@ -217,6 +218,12 @@
         <dependency>
             <groupId>org.apache.tinkerpop</groupId>
             <artifactId>tinkergraph-gremlin</artifactId>
+            <version>${tinkerpop.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-driver</artifactId>
             <version>${tinkerpop.version}</version>
         </dependency>
 
