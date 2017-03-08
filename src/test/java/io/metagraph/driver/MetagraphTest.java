@@ -48,15 +48,6 @@ public class MetagraphTest {
 
     @Test
     public void test2create() throws Exception {
-        Graph graph = metagraph.create("testGraph1");
-        graphId = graph.getGraphId();
-        assertNotNull(graphId);
-        assertTrue(graphId.length() > 0);
-
-        Graph testGraph2 = metagraph.create("testGraph2");
-        graphId1 = testGraph2.getGraphId();
-        assertNotNull(graphId1);
-        assertTrue(graphId1.length() > 0);
     }
 
     @Test

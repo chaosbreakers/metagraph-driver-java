@@ -1,6 +1,7 @@
 package io.metagraph.driver.resultmodel.login;
 
 /**
+ *
  * Created by (zhaoliang@metagraph.io) on (17-2-10).
  */
 public class AccessToken {

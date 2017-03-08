@@ -8,18 +8,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
+ * test.
  * Created by (zhaoliang@metagraph.io) on (17-2-15).
  */
 public class JsonObjectConvertTest {
-    @Test
-    public void convertToGraphResponse() throws Exception {
-
-    }
-
-    @Test
-    public void convertToMetagraphResponse() throws Exception {
-
-    }
 
     @Test
     public void convertToCreateResponse() throws Exception {
@@ -28,11 +20,6 @@ public class JsonObjectConvertTest {
         assertNotNull(createResponse);
         assertEquals("d6eb6168-3988-4d92-b6f3-8f3f186c8fc7", createResponse.getRequestId());
         assertEquals("ciz6d1naf00036l83am9ruksh", createResponse.getResult().getGraph_id());
-
-    }
-
-    @Test
-    public void convertToLoginResponse() throws Exception {
 
     }
 
