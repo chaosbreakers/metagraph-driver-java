@@ -156,7 +156,7 @@ public class Metagraph {
                 .asString();
 
         logger.info("[open][POST: /graphs/:gid/open] with parameter graphId={}, result={}", graphId, resultJson);
-        return new Graph();
+        return new Graph(null);
     }
 
     /**
