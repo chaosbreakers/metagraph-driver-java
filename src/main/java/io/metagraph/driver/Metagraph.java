@@ -216,7 +216,6 @@ public class Metagraph {
                 .asString();
         logger.info("[close][PUT: /graphs/:gid/close] with parameter graphId={}; result={}", graphId, result);
         return StringUtils.isNotEmpty(result);
-
     }
 
     private String getGraphIdFromJson(String json) throws IOException {

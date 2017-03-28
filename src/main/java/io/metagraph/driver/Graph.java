@@ -59,6 +59,10 @@ public class Graph {
         }
     }
 
+    /**
+     * @param traversal {@link Traversal}
+     * @return {@link ResultSet}
+     */
     public ResultSet submit(final Traversal traversal) {
         return client.submit(traversal);
     }

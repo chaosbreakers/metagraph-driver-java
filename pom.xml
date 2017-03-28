@@ -227,6 +227,18 @@
             <version>${tinkerpop.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>neo4j-gremlin</artifactId>
+            <version>3.2.4</version>
+        </dependency>
+        <!-- neo4j-tinkerpop-api-impl is NOT Apache 2 licensed - more information below -->
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-tinkerpop-api-impl</artifactId>
+            <version>0.3-2.3.2</version>
+        </dependency>
+
         <!--http client-->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
