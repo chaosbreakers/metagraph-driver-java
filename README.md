@@ -4,9 +4,9 @@ java driver for metagraph
 
 ## 1. dependency
 
-```
+```xml
 <dependency>
-    <groupId>io.openmg</groupId>
+    <groupId>io.metagraph.driver</groupId>
     <artifactId>metagraph-driver-java</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
@@ -36,14 +36,6 @@ Graph graph = metagraph.create("testGraph1");
 
 ```
 Metagraph metagraph = new Metagraph(new URL("http://localhost:8080"), "username", "password");
-GraphsResponse graphs = metagraph.graphs();
-
-```
-
-### 2.4 执行traversal语句
-
-```
-Metagraph metagraph = new Metagraph("http://localhost:8080", "username", "password");
-Graph graph = metagraph.open("graphId");
-String graphResponse = graph.gremlin("g.V()", "tp");
+Graph graph = metagraph.create();
+GraphResponse graphResponse = graph.gremlin("g.V()", "tp");
 ```
