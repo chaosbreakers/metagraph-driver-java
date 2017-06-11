@@ -17,8 +17,6 @@
 
 package io.metagraph.driver;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-
 import java.util.List;
 
 import io.vertx.core.json.JsonObject;
@@ -28,27 +26,34 @@ import io.vertx.core.json.JsonObject;
  */
 class MetagraphImpl implements Metagraph {
 
+    private MetagraphOptions options;
+
     MetagraphImpl(MetagraphOptions options) {
-
+        this.options = options;
     }
 
     @Override
-    public List<Graph> list() {
+    public List<MgitGraph> list() {
         return null;
     }
 
     @Override
-    public Graph get(String id) {
+    public MgitGraph get(String id) {
         return null;
     }
 
     @Override
-    public Graph open(String id) {
+    public MgitGraph open(String id) {
         return null;
     }
 
     @Override
-    public Graph create(String id, JsonObject jsonObject) {
+    public MgitGraph create(String id, JsonObject jsonObject) {
+        return null;
+    }
+
+    @Override
+    public MgitGraph update(String id, JsonObject metadata) {
         return null;
     }
 
