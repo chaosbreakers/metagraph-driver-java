@@ -1,0 +1,64 @@
+/*
+ *
+ *   Copyright (C) 2015-2017 Monogram Inc.
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+
+package io.metagraph.driver;
+
+import org.apache.tinkerpop.gremlin.structure.Graph;
+
+import java.util.List;
+
+import io.vertx.core.json.JsonObject;
+
+/**
+ * @author Ranger Tsao(https://github.com/boliza)
+ */
+class MetagraphImpl implements Metagraph {
+
+    MetagraphImpl(MetagraphOptions options) {
+
+    }
+
+    @Override
+    public List<Graph> list() {
+        return null;
+    }
+
+    @Override
+    public Graph get(String id) {
+        return null;
+    }
+
+    @Override
+    public Graph open(String id) {
+        return null;
+    }
+
+    @Override
+    public Graph create(String id, JsonObject jsonObject) {
+        return null;
+    }
+
+    @Override
+    public void delete(String id) {
+
+    }
+
+    @Override
+    public void close() {
+
+    }
+}

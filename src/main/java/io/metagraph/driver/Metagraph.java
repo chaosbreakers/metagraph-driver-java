@@ -17,8 +17,60 @@
 
 package io.metagraph.driver;
 
+import java.util.List;
+
+import io.vertx.core.json.JsonObject;
+
 /**
  * @author Ranger Tsao(https://github.com/boliza)
  */
-public class Metagraph {
+public interface Metagraph extends AutoCloseable {
+
+    static Metagraph connect(MetagraphOptions options) {
+        return new MetagraphImpl(options);
+    }
+
+    List<MgitGraph> list();
+
+    /**
+     * get MgitGraph by id
+     *
+     * @param id graph id
+     * @return MgitGraph
+     */
+    MgitGraph get(String id);
+
+    /**
+     * open graph by id
+     *
+     * @param id graph id
+     * @return graph
+     */
+    MgitGraph open(String id);
+
+    /**
+     * create graph by metadata
+     *
+     * @param id       graph id
+     * @param metadata graph metadata json object
+     * @return graph
+     */
+    MgitGraph create(String id, JsonObject metadata);
+
+    /**
+     * update graph by metadata
+     *
+     * @param id       graph id
+     * @param metadata graph metadata json object
+     * @return graph
+     */
+    MgitGraph update(String id, JsonObject metadata);
+
+    /**
+     * delete graph by id
+     *
+     * @param id graph id
+     */
+    void delete(String id);
+
 }
