@@ -44,7 +44,7 @@ class MetagraphImpl implements Metagraph {
 
     @Override
     public MgitGraph open(String id) {
-        return null;
+        return new MgitGraph(id, this);
     }
 
     @Override
