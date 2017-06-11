@@ -29,10 +29,9 @@ import org.junit.Test;
  */
 public class MgitGraphTest {
 
-
     @Test
     public void traversal() throws Exception {
-        Graph graph = new MgitGraph("g", new MetagraphImpl(new MetagraphOptions()));
+        Graph graph = Metagraph.connect(new MetagraphOptions()).open("g");
         GraphTraversalSource g = graph.traversal().withComputer();
         assertEquals(6L, IteratorUtils.count(g.V()));
     }
