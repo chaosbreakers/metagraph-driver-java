@@ -44,12 +44,16 @@ public class MgitGraph implements Graph {
 
     private String graphId;
     private Cluster cluster;
-    private MetagraphImpl metagraph;
+    private JsonObject metadata;
 
     public MgitGraph(String graphId, MetagraphImpl metagraph) {
         this.graphId = graphId;
-        this.metagraph = metagraph;
+        initCluster(metagraph);
+    }
 
+    public MgitGraph(String graphId, MetagraphImpl metagraph, JsonObject metadata) {
+        this.graphId = graphId;
+        this.metadata = metadata;
         initCluster(metagraph);
     }
 
@@ -276,4 +280,5 @@ public class MgitGraph implements Graph {
             }
         }
     }
+
 }

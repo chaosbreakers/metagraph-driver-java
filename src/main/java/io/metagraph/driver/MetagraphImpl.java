@@ -17,6 +17,10 @@
 
 package io.metagraph.driver;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -32,6 +36,8 @@ class MetagraphImpl implements Metagraph {
     private MetagraphOptions options;
     private RestTemplate restTemplate;
 
+    private transient String token;
+
     MetagraphImpl(MetagraphOptions options) {
         this.options = options;
         restTemplate = new RestTemplate();
@@ -42,9 +48,21 @@ class MetagraphImpl implements Metagraph {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
+    private <T> HttpEntity<String> buildHttpEntity(T body) {
+        HttpHeaders headers = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+        headers.setContentType(type);
+        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
+        headers.add("Authentication", token);
+        return body == null ? new HttpEntity<>(headers) : new HttpEntity(body, headers);
+    }
+
     @Override
     public MgitGraph get(String id) {
-        return null;
+        HttpEntity<String> entity = buildHttpEntity(null);
+        String json = restTemplate.exchange(String.format("http://%s:%d/graphs/{id}", options.getHost(), options.getHttpPort()), HttpMethod.GET, entity, String.class, id).getBody();
+        return new MgitGraph(id, this, new JsonObject(json));
     }
 
     @Override
@@ -65,5 +83,13 @@ class MetagraphImpl implements Metagraph {
     @Override
     public void close() {
 
+    }
+
+    protected String getToken() {
+        return token;
+    }
+
+    protected RestTemplate getRestTemplate() {
+        return restTemplate;
     }
 }

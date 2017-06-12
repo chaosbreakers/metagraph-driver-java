@@ -22,7 +22,7 @@ package io.metagraph.driver;
  */
 public class MetagraphOptions {
 
-    private static final int DEFAULT_HTTP_PORT = 80;
+    private static final int DEFAULT_HTTP_PORT = 8080;
     private static final int DEFAULT_WS_PORT = 8182;
     private static final String DEFAULT_HOST = "localhost";
 
@@ -36,6 +36,9 @@ public class MetagraphOptions {
     //TODO connection settings
 
     public MetagraphOptions() {
+        this.host = DEFAULT_HOST;
+        this.httpPort = DEFAULT_HTTP_PORT;
+        this.wsPort = DEFAULT_WS_PORT;
     }
 
     public int getHttpPort() {

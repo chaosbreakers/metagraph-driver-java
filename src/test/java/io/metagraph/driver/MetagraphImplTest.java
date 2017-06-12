@@ -17,22 +17,33 @@
 
 package io.metagraph.driver;
 
-import static org.junit.Assert.assertEquals;
-
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.junit.Test;
 
 /**
  * @author Ranger Tsao(https://github.com/boliza)
  */
-public class MgitGraphTest {
+public class MetagraphImplTest {
 
     @Test
-    public void traversal() throws Exception {
-        Graph graph = Metagraph.connect(new MetagraphOptions()).get("g");
-        GraphTraversalSource g = graph.traversal().withComputer();
-        assertEquals(6L, g.V().count().next().longValue());
+    public void list() throws Exception {
+    }
+
+    @Test
+    public void get() throws Exception {
+        MetagraphImpl metagraph = new MetagraphImpl(new MetagraphOptions());
+        metagraph.get("metagraph");
+    }
+
+    @Test
+    public void create() throws Exception {
+    }
+
+    @Test
+    public void update() throws Exception {
+    }
+
+    @Test
+    public void delete() throws Exception {
     }
 
 }
