@@ -32,7 +32,8 @@ import org.apache.tinkerpop.gremlin.structure.util.StringFactory;
 import java.util.Collections;
 import java.util.Iterator;
 
-import io.vertx.core.json.JsonObject;
+import io.metagraph.driver.json.JsonObject;
+
 
 /**
  * @author Ranger Tsao(https://github.com/boliza)

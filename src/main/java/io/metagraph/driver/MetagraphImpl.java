@@ -17,9 +17,12 @@
 
 package io.metagraph.driver;
 
+import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 
-import io.vertx.core.json.JsonObject;
+import io.metagraph.driver.json.JsonObject;
+
 
 /**
  * @author Ranger Tsao(https://github.com/boliza)
@@ -27,9 +30,11 @@ import io.vertx.core.json.JsonObject;
 class MetagraphImpl implements Metagraph {
 
     private MetagraphOptions options;
+    private RestTemplate restTemplate;
 
     MetagraphImpl(MetagraphOptions options) {
         this.options = options;
+        restTemplate = new RestTemplate();
     }
 
     @Override
@@ -40,11 +45,6 @@ class MetagraphImpl implements Metagraph {
     @Override
     public MgitGraph get(String id) {
         return null;
-    }
-
-    @Override
-    public MgitGraph open(String id) {
-        return new MgitGraph(id, this);
     }
 
     @Override

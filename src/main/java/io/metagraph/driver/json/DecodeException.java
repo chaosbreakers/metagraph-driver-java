@@ -15,24 +15,23 @@
  *   limitations under the License.
  */
 
-package io.metagraph.driver;
-
-import static org.junit.Assert.assertEquals;
-
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.junit.Test;
+package io.metagraph.driver.json;
 
 /**
- * @author Ranger Tsao(https://github.com/boliza)
+ * Instances of this Exception are thrown if failed to decode a JSON string, because of invalid JSON.
+ *
+ * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class MgitGraphTest {
+public class DecodeException extends RuntimeException {
 
-    @Test
-    public void traversal() throws Exception {
-        Graph graph = Metagraph.connect(new MetagraphOptions()).open("g");
-        GraphTraversalSource g = graph.traversal().withComputer();
-        assertEquals(6L, g.V().count().next().longValue());
+    public DecodeException() {
     }
 
+    public DecodeException(String message) {
+        super(message);
+    }
+
+    public DecodeException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
