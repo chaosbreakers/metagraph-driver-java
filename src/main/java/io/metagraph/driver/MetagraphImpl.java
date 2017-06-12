@@ -24,6 +24,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import io.metagraph.driver.json.JsonObject;
 
@@ -38,9 +40,12 @@ class MetagraphImpl implements Metagraph {
 
     private transient String token;
 
+    private Map<String, MgitGraph> graphs = new ConcurrentHashMap<>();
+
     MetagraphImpl(MetagraphOptions options) {
         this.options = options;
         restTemplate = new RestTemplate();
+        //TODO connect
     }
 
     @Override
@@ -60,24 +65,39 @@ class MetagraphImpl implements Metagraph {
 
     @Override
     public MgitGraph get(String id) {
+        if (graphs.containsKey(id)) {
+            return graphs.get(id);
+        }
         HttpEntity<String> entity = buildHttpEntity(null);
         String json = restTemplate.exchange(String.format("http://%s:%d/graphs/{id}", options.getHost(), options.getHttpPort()), HttpMethod.GET, entity, String.class, id).getBody();
-        return new MgitGraph(id, this, new JsonObject(json));
+        MgitGraph graph = new MgitGraph(id, this, new JsonObject(json));
+        graphs.put(id, graph);
+        return graph;
     }
 
     @Override
     public MgitGraph create(String id, JsonObject jsonObject) {
-        return null;
+        HttpEntity<String> entity = buildHttpEntity(jsonObject.toString());
+        String json = restTemplate.exchange(String.format("http://%s:%d/graphs", options.getHost(), options.getHttpPort()), HttpMethod.POST, entity, String.class, id).getBody();
+        MgitGraph graph = new MgitGraph(id, this, new JsonObject(json));
+        graphs.put(id, graph);
+        return graph;
     }
 
     @Override
     public MgitGraph update(String id, JsonObject metadata) {
-        return null;
+        HttpEntity<String> entity = buildHttpEntity(metadata.toString());
+        String json = restTemplate.exchange(String.format("http://%s:%d/graphs", options.getHost(), options.getHttpPort()), HttpMethod.PUT, entity, String.class, id).getBody();
+        MgitGraph graph = new MgitGraph(id, this, new JsonObject(json));
+        graphs.put(id, graph);
+        return graph;
     }
 
     @Override
     public void delete(String id) {
-
+        HttpEntity<String> entity = buildHttpEntity(null);
+        restTemplate.exchange(String.format("http://%s:%d/graphs/{id}", options.getHost(), options.getHttpPort()), HttpMethod.DELETE, entity, String.class, id).getBody();
+        graphs.remove(id);
     }
 
     @Override
