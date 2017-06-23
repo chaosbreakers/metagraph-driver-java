@@ -18,7 +18,7 @@
 package io.metagraph.driver;
 
 
-import io.metagraph.driver.traversal.dsl.MetagraphTraversal;
+import io.metagraph.driver.traversal.dsl.MetagraphFileTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.junit.Test;
@@ -35,38 +35,15 @@ public class MgitGraphTest {
     @Test
     public void traversal() throws Exception {
         Graph graph = Metagraph.connect(new MetagraphOptions()).get("cj486u3i40003vc769qds4d0o");
-        GraphTraversalSource g = graph.traversal().withComputer();
-        g.V().properties();
-       /* g.addV().asAdmin().getBytecode().addStep("readFile");
-        g.addV().asAdmin().addStep(new AddVertexStep(g.addV().asAdmin(), null));*/
-        MetagraphTraversal m  = new MetagraphTraversal();
-        //读文件
-        byte[] file = (byte[])m.readFile(g.V()).value().next();
-        getFile(file,"d:\\","3.txt");
-
+        GraphTraversalSource gts = graph.traversal().withComputer();
+        MetagraphFileTraversal mft = new MetagraphFileTraversal(gts);
         //写文件
-        byte[] file1 = getBytes("d:\\1.txt");
-        MetagraphTraversal.addFile(g.addV(), file1).next();
-
-
-
-        //g.addV().addV("test")
-        //byte[] file = getBytes("d:\\1.txt");
-        //MetagraphTraversal.addFile(g.addV(), file).next();
-        assertEquals(6L, g.V().count().next().longValue());
-
-
-        /*GraphTraversalSource clone = g.clone();
-        clone.getBytecode().addStep("addFile", new Object[]{fileBytes});
-        GraphTraversal.Admin<Vertex, Vertex> traversal = new DefaultGraphTraversal(clone);
-        traversal.addStep(new AddVertexStartStep(traversal, null));*/
-
-
-       /* default GraphTraversalSource traversal() {
-            return
-        }*/
-
-        //MetagraphTraversal g = graph.traversal().withComputer();
+        byte[] newFile = getBytesFormFile("d:\\1.txt");
+        mft.addFile(newFile).next();
+        //读文件
+        byte[] file = (byte[]) mft.readFile().value().next();
+        saveFileToDisk(file, "d:\\", "3.txt");
+        assertEquals(6L, gts.V().count().next().longValue());
 
        /* GraphTraversalSource g = graph.traversal().withComputer();
         g.addV().property("name","marko").next();*/
@@ -84,13 +61,13 @@ public class MgitGraphTest {
     /**
      * 获得指定文件的byte数组
      */
-    private byte[] getBytes(String filePath) {
+    private byte[] getBytesFormFile(String filePath) {
         byte[] buffer = null;
         try {
             File file = new File(filePath);
             FileInputStream fis = new FileInputStream(file);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
-            byte[] b = new byte[1000];
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(4096);
+            byte[] b = new byte[4096];
             int n;
             while ((n = fis.read(b)) != -1) {
                 bos.write(b, 0, n);
@@ -109,7 +86,7 @@ public class MgitGraphTest {
     /**
      * 根据byte数组，生成文件
      */
-    public static void getFile(byte[] bfile, String filePath, String fileName) {
+    public static void saveFileToDisk(byte[] bfile, String filePath, String fileName) {
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
         File file = null;

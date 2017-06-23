@@ -13,27 +13,27 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 /**
  * @author ZhaoPeng
  */
-public class MetagraphTraversal<S, E> extends DefaultGraphTraversal<S, E> {
+public class MetagraphFileTraversal<S, E> extends DefaultGraphTraversal<S, E> {
 
-    public MetagraphTraversal() {
-        super();
-    }
+    private GraphTraversalSource gts;
 
-    public MetagraphTraversal(final GraphTraversalSource graphTraversalSource) {
+    public MetagraphFileTraversal(final GraphTraversalSource graphTraversalSource) {
         super(graphTraversalSource);
+        this.gts = graphTraversalSource;
     }
 
-    public MetagraphTraversal(final Graph graph) {
+    public MetagraphFileTraversal(final Graph graph) {
         super(graph);
     }
 
-    public static GraphTraversal<Vertex, Vertex> addFile(GraphTraversal<Vertex, Vertex> g, Object file) {
-
+    public GraphTraversal<Vertex, Vertex> addFile(Object file) {
+        GraphTraversal<Vertex, Vertex> g = gts.V();
         g.asAdmin().getBytecode().addStep("saveFile", new Object[]{file});
         return g.asAdmin().addStep(new AddVertexStep(g.asAdmin(), null));
     }
 
-    public <E2> GraphTraversal<S, ? extends Property<Object>> readFile(GraphTraversal<S, E> g) {
+    public <E2> GraphTraversal<S, ? extends Property<Object>> readFile() {
+        GraphTraversal<Vertex, Vertex> g = gts.V();
         g.asAdmin().getBytecode().addStep("readFile");
         return g.asAdmin().addStep(new PropertiesStep(g.asAdmin(), PropertyType.PROPERTY));
     }
