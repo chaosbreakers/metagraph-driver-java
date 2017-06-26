@@ -19,8 +19,11 @@ package io.metagraph.driver;
 
 
 import io.metagraph.driver.traversal.dsl.MetagraphFileTraversal;
+import org.apache.tinkerpop.gremlin.driver.Cluster;
+import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.util.empty.EmptyGraph;
 import org.junit.Test;
 
 import java.io.*;
@@ -34,6 +37,7 @@ public class MgitGraphTest {
 
     @Test
     public void traversal() throws Exception {
+        //Graph graph = Metagraph.connect(new MetagraphOptions()).get("cj486u3i40003vc769qds4d0o");
         Graph graph = Metagraph.connect(new MetagraphOptions()).get("cj486u3i40003vc769qds4d0o");
         GraphTraversalSource gts = graph.traversal().withComputer();
         MetagraphFileTraversal mft = new MetagraphFileTraversal(gts);
@@ -56,6 +60,31 @@ public class MgitGraphTest {
         //assertEquals("marko", g.V().properties("name").value().next());
         //assertEquals(6L, g.V().count().next().longValue());
 
+    }
+
+    @Test
+    public void testGremlinDriver() {
+        try {
+            Cluster cluster = Cluster.build().addContactPoint("192.168.94.11").port(8182).create();
+            Graph graph = EmptyGraph.instance();
+            GraphTraversalSource g = graph.traversal().withRemote(DriverRemoteConnection.using(cluster, "metagraph"));
+
+            MetagraphFileTraversal mft = new MetagraphFileTraversal(g);
+            //写文件
+            byte[] newFile = getBytesFormFile("d:\\1.txt");
+            mft.addFile(newFile).next();
+            //读文件
+            byte[] file = (byte[]) mft.readFile().value().next();
+            saveFileToDisk(file, "d:\\", "3.txt");
+
+            //g.V().valueMap(true);
+            //System.out.println("test---"+ g.V().count().next().longValue());
+            //g.addV("test").next();
+            g.close();
+            cluster.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -1,14 +1,10 @@
 package io.metagraph.driver;
 
-import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
-import org.apache.tinkerpop.gremlin.driver.Result;
-import org.apache.tinkerpop.gremlin.driver.ResultSet;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.util.empty.EmptyGraph;
 
 /**
  * Created by Utopia on 2017-06-20.
@@ -16,16 +12,13 @@ import java.util.concurrent.CompletableFuture;
 public class GremlinDriverTest {
 
     public static void main(String[] args) {
-        Cluster cluster = Cluster.build().addContactPoint("localhost").port(8182).create();
-        Client client = cluster.connect();
-        /*ResultSet results1 = client.submit("[1,2,3,4]");
-        results1.stream().map(i -> i.get(Integer.class) * 2);*/
-
-        CompletableFuture<List<Result>> results = client.submit("[1,2,3,4]").all();
-        CompletableFuture<ResultSet> future = client.submitAsync("[1,2,3,4]");
-        Map<String, Object> params = new HashMap<>();
-        params.put("x", 4);
-        client.submit("[1,2,3,x]", params);
+        Cluster cluster = Cluster.build().addContactPoint("192.168.94.11").port(8182).create();
+        Graph graph = EmptyGraph.instance();
+        GraphTraversalSource g = graph.traversal().withRemote(DriverRemoteConnection.using(cluster, "metagraph"));
+        System.out.println("test---" + g.V().count().next().longValue());
+        g.addV("test").next();
+        //CompletableFuture<List<Result>> results = client.submit("[1,2,3,4]").all();
+        //System.out.println("test"+results.toString());
     }
 
 }
