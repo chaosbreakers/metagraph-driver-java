@@ -18,6 +18,7 @@
 package io.metagraph.driver;
 
 import io.metagraph.driver.json.JsonObject;
+import io.metagraph.driver.traversal.KuazGraphTraversalSource;
 import org.apache.commons.configuration.Configuration;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
@@ -73,7 +74,7 @@ public class MgitGraph implements Graph {
 
     @Override
     public GraphTraversalSource traversal() {
-        return new GraphTraversalSource(this).withRemote(DriverRemoteConnection.using(cluster, graphId));
+        return new KuazGraphTraversalSource(this).withRemote(DriverRemoteConnection.using(cluster, graphId));
     }
 
     @Override
