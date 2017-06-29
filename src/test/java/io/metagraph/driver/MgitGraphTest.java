@@ -31,10 +31,13 @@ public class MgitGraphTest {
 
     @Test
     public void traversal() throws Exception {
-        Graph graph = Metagraph.connect(new MetagraphOptions()).get("cj486u3i40003vc769qds4d0o");
-        KuazGraphTraversalSource g = (KuazGraphTraversalSource)graph.traversal().withComputer();
+        Graph graph = Metagraph.connect(new MetagraphOptions()).get("cj4i5jnsm0000qo76vc3ostrq");
+        KuazGraphTraversalSource g = (KuazGraphTraversalSource) graph.traversal().withComputer();
         //写文件
-        byte[] newFile = getBytesFormFile("d:\\1.txt");
+        byte[] newFile = getBytesFormFile("D:\\move\\del\\file\\1.txt");
+        //g.V().addFile(newFile).next();
+        //g.V().properties().
+        //g.V().addFile(newFile).next();
         g.V().addFile(newFile).next();
         //FileInputStream fis = new FileInputStream("d:\\1.txt");
         //g.V().saveFile(fis);
