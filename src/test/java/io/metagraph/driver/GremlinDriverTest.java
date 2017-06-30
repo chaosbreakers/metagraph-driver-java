@@ -16,7 +16,7 @@ public class GremlinDriverTest {
         Graph graph = EmptyGraph.instance();
         GraphTraversalSource g = graph.traversal().withRemote(DriverRemoteConnection.using(cluster, "metagraph"));
         System.out.println("test---" + g.V().count().next().longValue());
-        g.addV("test").next();
+        g.addV("test");
         //CompletableFuture<List<Result>> results = client.submit("[1,2,3,4]").all();
         //System.out.println("test"+results.toString());
     }

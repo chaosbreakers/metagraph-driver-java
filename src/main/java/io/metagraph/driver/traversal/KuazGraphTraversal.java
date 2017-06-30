@@ -23,10 +23,9 @@ public class KuazGraphTraversal<S, E> extends DefaultGraphTraversal<S, E> {
     }
 
 
-    public GraphTraversal<S, E> addFile(final Object bytes) {
+    public GraphTraversal<S, E> addFile(final byte[] bytes) {
         this.asAdmin().getBytecode().addStep("saveFile", bytes);
-        //this.asAdmin().addStep(new SaveFileStep<>(this.asAdmin(), bytes));
-        return this;
+        return  this;
     }
 
     public GraphTraversal<S, E> hasFile() {
@@ -40,4 +39,9 @@ public class KuazGraphTraversal<S, E> extends DefaultGraphTraversal<S, E> {
         return this;
         //return this.asAdmin().addStep(new ReadFileStep<>(this.asAdmin()));
     }
+
+   /* @Override
+    public E next() {
+        return super.next();
+    }*/
 }

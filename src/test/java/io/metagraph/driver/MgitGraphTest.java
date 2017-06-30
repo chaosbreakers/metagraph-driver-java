@@ -35,33 +35,9 @@ public class MgitGraphTest {
         KuazGraphTraversalSource g = (KuazGraphTraversalSource) graph.traversal().withComputer();
         //写文件
         byte[] newFile = getBytesFormFile("D:\\move\\del\\file\\1.txt");
-        //g.V().addFile(newFile).next();
-        //g.V().properties().
-        //g.V().addFile(newFile).next();
-        g.V().addFile(newFile).next();
-        //FileInputStream fis = new FileInputStream("d:\\1.txt");
-        //g.V().saveFile(fis);
-        /*g.saveFile(newFile).next();
-        g.*/
-        //FileInputStream fis = new FileInputStream("d:\\1.txt");
-        //ObjectInputStream in=new ObjectInputStream(fis);
-        //mft.addFile(in).next();
+        g.addV().addFile(newFile).next();
         //读文件
-        /*byte[] file = (byte[]) mft.readFile().value().next();
-        saveFileToDisk(file, "d:\\", "3.txt");
-        assertEquals(6L, gts.V().count().next().longValue());*/
-
-       /* GraphTraversalSource g = graph.traversal().withComputer();
-        g.addV().property("name","marko").next();*/
-        //g.addV().property("name","marko").next();
-        //g.addV().addV()
-        //byte[] fileBytes = getBytes("d:\\1.txt");
-        //g.addV().property("file", fileBytes).next();
-       /* byte[] storeFileBytes = (byte[])g.V().properties("file").value().next();
-        getFile(storeFileBytes,"d:\\","2.txt");*/
-        //assertEquals("marko", g.V().properties("name").value().next());
-        //assertEquals(6L, g.V().count().next().longValue());
-
+        g.V("cj4jb4ryb0001w403rxgdkldu").readFile().next();
     }
 
     @Test
@@ -86,6 +62,38 @@ public class MgitGraphTest {
             //g.addV("test").next();
             //g.close();
             //cluster.close();
+
+            //g.V().addFile(newFile).next();
+            //g.V().properties().
+            //g.V().addFile(newFile).next();
+            //g.V().addFile(newFile).next();
+            //g.addV().addFile(newFile).next();
+            //g.V().hasFile().next();
+           /* byte[] file = (byte[])
+            saveFileToDisk(file, "d:\\", "D:\\move\\del\\file\\3.txt");*/
+                //g.addV().property("test","123").next();
+                //FileInputStream fis = new FileInputStream("d:\\1.txt");
+                //g.V().saveFile(fis);
+            /*g.saveFile(newFile).next();
+            g.*/
+                //FileInputStream fis = new FileInputStream("d:\\1.txt");
+                //ObjectInputStream in=new ObjectInputStream(fis);
+                //mft.addFile(in).next();
+                //读文件
+            /*byte[] file = (byte[]) mft.readFile().value().next();
+            saveFileToDisk(file, "d:\\", "3.txt");
+            assertEquals(6L, gts.V().count().next().longValue());*/
+
+           /* GraphTraversalSource g = graph.traversal().withComputer();
+            g.addV().property("name","marko").next();*/
+                //g.addV().property("name","marko").next();
+                //g.addV().addV()
+                //byte[] fileBytes = getBytes("d:\\1.txt");
+                //g.addV().property("file", fileBytes).next();
+           /* byte[] storeFileBytes = (byte[])g.V().properties("file").value().next();
+            getFile(storeFileBytes,"d:\\","2.txt");*/
+                //assertEquals("marko", g.V().properties("name").value().next());
+                //assertEquals(6L, g.V().count().next().longValue());
         } catch (Exception e) {
             e.printStackTrace();
         }
